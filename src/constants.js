@@ -20,12 +20,12 @@ export const STATUS = [
 ];
 
 export const PRIORITIES = [
-  { key: "low", label: "Low", dot: "bg-green-500", border:"border-i-green-500" },
-  { key: "medium", label: "Medium", dot: "bg-amber-400", border:"border-l-amber-400" },
-  { key: "high", label: "High", dot: "bg-red-500", border:"border-l-red-500" }
+  { key: "low", label: "Low", dot: "bg-green-500", border: "border-l-green-500" },
+  { key: "medium", label: "Medium", dot: "bg-amber-400", border: "border-l-amber-400" },
+  { key: "high", label: "High", dot: "bg-red-500", border: "border-l-red-500" }
 ];
 
-export function formData(iso){
+export function formatDate(iso){
   if(!iso) return "";
   const d = new Date(iso + "T00:00:00");
   if(isNaN(d)) return iso;

@@ -1,7 +1,8 @@
 import { PRIORITIES, formatDate } from "../constants.js";
 import TaskForm from "./TaskForm.jsx";
 
-export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit, onSaveEdit, onDelete, onDragStart }) {
+export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit, 
+  onSaveEdit, onDelete, onDragStart }) {
   const pri = PRIORITIES.find((p) => p.key === task.priority) || PRIORITIES[1];
 
   if (isEditing) {
@@ -18,7 +19,8 @@ export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit, o
 
   return (
     <div
-      className={`bg-gray-50 dark:bg-gray-800 border dark:border-gray-600 border-l-4 ${pri.border} rounded-md p-3 cursor-grab`}
+      className={`bg-gray-50 dark:bg-gray-800 border dark:border-gray-600 border-l-4 
+        ${pri.border} rounded-md p-3 cursor-grab`}
       draggable
       onDragStart={(e) => onDragStart(e, task.id)}
     >
@@ -43,8 +45,10 @@ export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit, o
       )}
 
       <div className="flex gap-1.5">
-        <button className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 text-xs" onClick={() => onStartEdit(task.id)}>Edit</button>
-        <button className="border dark:border-gray-600 rounded px-2 py-0.5 text-xs text-red-500" onClick={() => onDelete(task.id)}>Delete</button>
+        <button className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 
+        text-xs" onClick={() => onStartEdit(task.id)}>Edit</button>
+        <button className="border dark:border-gray-600 rounded px-2 py-0.5 text-xs 
+        text-red-500" onClick={() => onDelete(task.id)}>Delete</button>
       </div>
     </div>
   );

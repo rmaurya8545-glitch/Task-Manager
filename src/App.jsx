@@ -10,6 +10,9 @@ import RegisterPage from "./components/RegisterPage.jsx";
 export default function App() {
   const [page, setPage] = useState("hero");
   const [theme, setTheme] = useState("light");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   useEffect(() => {
     const saved = localStorage.getItem("kanban-theme");
@@ -30,19 +33,45 @@ export default function App() {
     window.scrollTo(0, 0);
   }
 
+  function handleGetStarted() {
+    if (isLoggedIn) {
+      navigate("app");
+    } else {
+      navigate("login");
+    }
+  }
+
   return (
-    <div className="overflow-x-hidden">
-      <Navbar onNavigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
+    <div>
+      <Navbar
+        onNavigate={navigate}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        page={page}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        priorityFilter={priorityFilter}
+        onPriorityFilterChange={setPriorityFilter}
+      />
 
-      {page === "hero" && <HeroPage onGetStarted={() => navigate("app")} onLogin={() => navigate("login")} />}
-      
+      {page === "hero" && (
+        <HeroPage onGetStarted={handleGetStarted} onLogin={() => navigate("login")} />
+      )}
+      {page === "app" && (
+        <BoardPage searchQuery={searchQuery} priorityFilter={priorityFilter} />
+      )}
+      {page === "about" && <AboutPage onTryBoard={handleGetStarted} />}
+      {page === "login" && (
+        <LoginPage
+          onNavigate={navigate}
+          onLoginSuccess={() => {
+            setIsLoggedIn(true);
+            navigate("app");
+          }}
+        />
+      )}
+      {page === "register" && <RegisterPage onNavigate={navigate} />}
 
-      
-        {page === "app" && <BoardPage />}
-        {page === "about" && <AboutPage onTryBoard={() => navigate("app")} />}
-        {page === "login" && <LoginPage onNavigate={navigate} />}
-        {page === "register" && <RegisterPage onNavigate={navigate} />}
-      
       <Footer />
     </div>
   );

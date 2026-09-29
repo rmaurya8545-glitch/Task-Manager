@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { STATUS } from "../constants.js";
 import Column from "./Column.jsx";
 
-let nextId = 1;
-
 export default function BoardPage({ searchQuery = "", priorityFilter = "all" }) {
   const [tasks, setTasks] = useState([]); // ab khaali — user khud add karega
 
@@ -14,7 +12,15 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all" }) 
   },[]);
 
   function handleAddTask(data) {
-    setTasks((prev) => [...prev, { id: nextId++, ...data }]);
+    fetch("http://localhost:8080/api/tasks", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    })
+    .then((res) => res.json())
+    .then((newTask) => {
+      setTasks((prev) => [...prev, newTask]);
+    });
   }
   function handleSaveEdit(id, data) {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...data } : t)));

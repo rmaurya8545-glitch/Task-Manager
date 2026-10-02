@@ -11,6 +11,7 @@ export default function App() {
   const [page, setPage] = useState("hero");
   const [theme, setTheme] = useState("light");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
@@ -58,14 +59,15 @@ export default function App() {
         <HeroPage onGetStarted={handleGetStarted} onLogin={() => navigate("login")} />
       )}
       {page === "app" && (
-        <BoardPage searchQuery={searchQuery} priorityFilter={priorityFilter} />
+        <BoardPage searchQuery={searchQuery} priorityFilter={priorityFilter} userId={currentUser?.id} />
       )}
       {page === "about" && <AboutPage onTryBoard={handleGetStarted} />}
-      {page === "login" && (
+      {page === "login" && ( 
         <LoginPage
           onNavigate={navigate}
-          onLoginSuccess={() => {
+          onLoginSuccess={(user) => {
             setIsLoggedIn(true);
+            setCurrentUser(user);
             navigate("app");
           }}
         />

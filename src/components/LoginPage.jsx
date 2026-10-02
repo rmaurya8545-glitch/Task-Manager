@@ -6,7 +6,21 @@ export default function LoginPage({ onNavigate, onLoginSuccess }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onLoginSuccess();
+    fetch("http://localhost:8080/api/login", {
+      method:"POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error("Login failed");
+      return res.json();
+    })
+    .then((user) => {
+      onLoginSuccess(user);
+    })
+    .catch(() => {
+      alert("Invalid email or password");
+    });
   }
 
   return (

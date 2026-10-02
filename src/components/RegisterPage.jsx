@@ -7,7 +7,21 @@ export default function RegisterPage({ onNavigate }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    alert("Register logic baad mein backend se jodenge");
+    fetch("http://localhost:8080/api/register",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ name, email, password })
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error("Registration failed");
+      return res.json();
+    })
+    .then(() => {
+      onNavigate("login");
+    })
+    .catch(() => {
+      alert("Registration failed -- email might already be registered");
+    });
   }
 
   return (

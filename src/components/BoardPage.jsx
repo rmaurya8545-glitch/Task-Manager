@@ -43,7 +43,20 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
     });
   }
   function handleDrop(id, statusKey) {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status: statusKey } : t)));
+    const task = tasks.find((t) => t.id === id);
+    if(!task || task.status === statusKey) return;
+
+    const updated = { ...task, status:statusKey };
+
+    fetch(`http://localhost:8080/api/tasks/${id}`, {
+      method:"PUT",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify(updated)
+    })
+    .then((res) => res.json())
+    .then((savedTask) => {
+      setTasks((prev) => prev.map((t) => (t.id ===id ? savedTask : t)));
+    });
   }
   const filteredTasks = tasks.filter((t) => {
   const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase());

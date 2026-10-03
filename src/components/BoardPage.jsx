@@ -2,20 +2,21 @@ import { useState, useEffect } from "react";
 import { STATUS } from "../constants.js";
 import Column from "./Column.jsx";
 
-export default function BoardPage({ searchQuery = "", priorityFilter = "all" }) {
+export default function BoardPage({ searchQuery = "", priorityFilter = "all", userId }) {
   const [tasks, setTasks] = useState([]); // ab khaali — user khud add karega
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/tasks")
+    if(!userId) return;
+    fetch(`http://localhost:8080/api/tasks?userId=${userId}`)
     .then((res) => res.json())
     .then((data) => setTasks(data));
-  },[]);
+  },[userId]);
 
   function handleAddTask(data) {
     fetch("http://localhost:8080/api/tasks", {
       method: "POST",
       headers: {"Content-Type":"application/json"},
-      body:JSON.stringify(data)
+      body:JSON.stringify({ ...data, userId })
     })
     .then((res) => res.json())
     .then((newTask) => {
@@ -23,11 +24,23 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all" }) 
     });
   }
   function handleSaveEdit(id, data) {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...data } : t)));
+    fetch(`http://localhost:8080/api/tasks/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then((res) =>res.JSON())
+    .then((updatedTask) => {
+      setTasks((prev) => prev.map((t) => (t.id == id ? updatedTask : t)));
+    });
   }
 
   function handleDelete(id) {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+    fetch(`http://localhost:8080/api/tasks/${id}`, {
+      method:"DELETE"
+    }).then(() => {
+      setTasks((prev) => prev.filter((t) => t.id !==id));
+    });
   }
   function handleDrop(id, statusKey) {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status: statusKey } : t)));
@@ -54,4 +67,5 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all" }) 
     </div>
   );
 }
+
 

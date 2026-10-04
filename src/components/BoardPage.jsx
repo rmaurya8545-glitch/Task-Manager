@@ -29,7 +29,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
-    .then((res) =>res.JSON())
+    .then((res) =>res.json())
     .then((updatedTask) => {
       setTasks((prev) => prev.map((t) => (t.id == id ? updatedTask : t)));
     });

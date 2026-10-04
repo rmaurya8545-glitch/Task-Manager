@@ -16,7 +16,6 @@ export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit,
       />
     );
   }
-
   return (
     <div
       className={`bg-gray-50 dark:bg-gray-800 border dark:border-gray-600 border-l-4 
@@ -25,7 +24,7 @@ export default function TaskCard({ task, isEditing, onStartEdit, onCancelEdit,
       onDragStart={(e) => onDragStart(e, task.id)}
     >
       <p className="text-sm font-semibold mb-1 dark:text-white">{task.title}</p>
-      {task.desc && <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{task.desc}</p>}
+      {task.description && <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{task.description}</p>}
 
       <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
         <span className={`w-2 h-2 rounded-full ${pri.dot}`}></span>

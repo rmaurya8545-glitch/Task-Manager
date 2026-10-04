@@ -3,7 +3,7 @@ import { STATUS, PRIORITIES } from "../constants.js";
 
 export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit, onCancel }) {
   const [title, setTitle] = useState(initial?.title || "");
-  const [desc, setDesc] = useState(initial?.desc || "");
+  const [desc, setDesc] = useState(initial?.description || "");
   const [priority, setPriority] = useState(initial?.priority || "medium");
   const [status, setStatus] = useState(initial?.status || defaultStatus);
   const [assignee, setAssignee] = useState(initial?.assignee || "");
@@ -14,7 +14,7 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
     if (!trimmedTitle) return;
     onSubmit({
       title: trimmedTitle,
-      desc: desc.trim(),
+      description: desc.trim(),
       priority,
       status,
       assignee: assignee.trim(),

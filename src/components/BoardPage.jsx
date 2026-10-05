@@ -70,7 +70,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
         <Column
           key={column.key}
           column={column}
-          tasks={tasks.filter((t) => t.status === column.key)}
+          tasks={filteredTasks.filter((t) => t.status === column.key)}
           onAddTask={handleAddTask}
           onSaveEdit={handleSaveEdit}
           onDelete={handleDelete}

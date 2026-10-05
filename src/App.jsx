@@ -42,6 +42,12 @@ export default function App() {
     }
   }
 
+  function handleLogout(){
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    navigate("hero");
+  }
+
   return (
     <div>
       <Navbar
@@ -53,6 +59,8 @@ export default function App() {
         onSearchChange={setSearchQuery}
         priorityFilter={priorityFilter}
         onPriorityFilterChange={setPriorityFilter}
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
       />
 
       {page === "hero" && (

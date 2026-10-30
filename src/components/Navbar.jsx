@@ -53,7 +53,7 @@ export default function Navbar({
           About
         </button>
         {isLoggedIn && (
-        <button className="nav-pill text-red-500" onClick={onLogout}>
+        <button className="nav-pill !text-red-500" onClick={onLogout}>
           Logout
         </button>
         )}

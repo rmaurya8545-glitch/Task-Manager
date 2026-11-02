@@ -23,7 +23,7 @@ export default function RegisterPage({ onNavigate }) {
       return;
     }
 
-    fetch("http://localhost:8080/api/register", {
+    fetch("https://kanbanboardbackend-2.onrender.com/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password })

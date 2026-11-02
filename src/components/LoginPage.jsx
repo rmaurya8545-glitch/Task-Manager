@@ -6,7 +6,7 @@
 
 //   function handleSubmit(e) {
 //     e.preventDefault();
-//     fetch("http://localhost:8080/api/login", {
+//     fetch("https://kanbanboardbackend-2.onrender.com/api/login", {
 //       method:"POST",
 //       headers: { "Content-Type": "application/json" },
 //       body: JSON.stringify({ email, password })
@@ -78,7 +78,7 @@ export default function LoginPage({ onNavigate, onLoginSuccess }) {
       return;
     }
 
-    fetch("http://localhost:8080/api/login", {
+    fetch("https://kanbanboardbackend-2.onrender.com/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })

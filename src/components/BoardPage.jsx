@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { STATUS } from "../constants.js";
 import Column from "./Column.jsx";
+import { API_URL } from "../config.js";
 
 export default function BoardPage({ searchQuery = "", priorityFilter = "all", userId }) {
   const [tasks, setTasks] = useState([]); // ab khaali — user khud add karega
 
   useEffect(() => {
     if(!userId) return;
-    fetch(`https://kanbanboardbackend-2.onrender.com/api/tasks?userId=${userId}`)
+    fetch(`${API_URL}/api/tasks?userId=${userId}`)
     .then((res) => res.json())
     .then((data) => setTasks(data));
   },[userId]);
 
   function handleAddTask(data) {
-    fetch("https://kanbanboardbackend-2.onrender.com/api/tasks", {
+    fetch(`${API_URL}/api/tasks`, {
       method: "POST",
       headers: {"Content-Type":"application/json"},
       body:JSON.stringify({ ...data, userId })
@@ -24,7 +25,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
     });
   }
   function handleSaveEdit(id, data) {
-    fetch(`https://kanbanboardbackend-2.onrender.com/api/tasks/${id}`, {
+    fetch(`${API_URL}/api/tasks/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -36,7 +37,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
   }
 
   function handleDelete(id) {
-    fetch(`https://kanbanboardbackend-2.onrender.com/api/tasks/${id}`, {
+    fetch(`${API_URL}/api/tasks/${id}`, {
       method:"DELETE"
     }).then(() => {
       setTasks((prev) => prev.filter((t) => t.id !==id));
@@ -48,7 +49,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
 
     const updated = { ...task, status:statusKey };
 
-    fetch(`https://kanbanboardbackend-2.onrender.com/api/tasks/${id}`, {
+    fetch(`${API_URL}/api/tasks/${id}`, {
       method:"PUT",
       headers: { "Content-Type": "application/json" },
       body:JSON.stringify(updated)

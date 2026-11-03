@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config.js";
 
 export default function RegisterPage({ onNavigate }) {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ export default function RegisterPage({ onNavigate }) {
       return;
     }
 
-    fetch("https://kanbanboardbackend-2.onrender.com/api/register", {
+    fetch(`${API_URL}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password })

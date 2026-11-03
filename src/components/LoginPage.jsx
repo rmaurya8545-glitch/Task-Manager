@@ -73,6 +73,7 @@ export default function LoginPage({ onNavigate, onLoginSuccess }) {
           Register
         </button>
       </p>
+      
     </div>
   );
 }

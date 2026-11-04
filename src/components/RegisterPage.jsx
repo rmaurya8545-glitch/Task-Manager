@@ -72,10 +72,14 @@ export default function RegisterPage({ onNavigate }) {
         />
 
         <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Password</label>
-        <input
+        {/* <input
           type="password"
           className="w-full border rounded px-3 py-2 text-sm mb-6 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
           placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        /> */}
+        <PasswordInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

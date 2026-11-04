@@ -14,7 +14,7 @@ export default function PasswordInput ({ value, onChange, placeholder ="......"}
             <button
             type="button"
             onClick={() => setShow(!show)}
-            className="absolute right-3 top-1/2 -translate-y-/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+            className="absolute right-3 top-[45%] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
             aria-lable={show ? "Hide password" : "Show password"}
             >
                 {show ? (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { API_URL } from "../config.js";
-
+import PasswordInput from "./PasswordInput.jsx";
 export default function RegisterPage({ onNavigate }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

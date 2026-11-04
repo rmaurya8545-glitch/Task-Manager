@@ -6,7 +6,7 @@ export default function PasswordInput ({ value, onChange, placeholder ="......"}
         <div className="relative mb-6">
             <input
             type={show ? "text" : "password"}
-            className="w-full border rounded px-3 py-2 pr-10 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+            className=" block w-full border rounded px-3 py-2 pr-10 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
             placeholder={placeholder}
             value={value}
             onChange={onChange}

@@ -9,23 +9,21 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
   const [status, setStatus] = useState(initial?.status || defaultStatus);
   const [assignee, setAssignee] = useState(initial?.assignee || "");
   const [dueDate, setDueDate] = useState(initial?.dueDate || "");
+  const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  // function handleSubmit() {
-  //   const trimmedTitle = title.trim();
-  //   if (!trimmedTitle) return;
-  //   onSubmit({
-  //     title: trimmedTitle,
-  //     description: desc.trim(),
-  //     priority,
-  //     status,
-  //     assignee: assignee.trim(),
-  //     dueDate
-  //   });
-  // }
+  function validate() {
+    const newErrors = {};
+    if (!title.trim()) newErrors.title = "Task title is required";
+    if (!priority) newErrors.priority = "Select a priority";
+    if (!status) newErrors.status = "Select a status";
+    if (!assignee.trim()) newErrors.assignee = "Assignee is required";
+    if (!dueDate) newErrors.dueDate = "Due date is required";
+    return newErrors;
+  }
 
-    function handleSubmit() {
+  function handleSubmit() {
     const newErrors = validate();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
@@ -49,94 +47,86 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
       .finally(() => setSaving(false));
   }
 
-  const inputClass =
-    "w-full border rounded px-2 py-1.5 text-sm mb-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white";
   const labelClass = "block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1";
+
+  function fieldClass(name) {
+    return `w-full border rounded px-2 py-1.5 text-sm mb-1 dark:bg-gray-700 dark:text-white ${
+      errors[name] ? "border-red-500 dark:border-red-500" : "dark:border-gray-600"
+    }`;
+  }
+
+  function errorText(name) {
+    return errors[name] ? (
+      <p className="text-xs text-red-500 mb-2 mt-0">{errors[name]}</p>
+    ) : null;
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 border dark:border-gray-600 rounded-lg p-3">
       <label className={labelClass}>Task Title</label>
       <input
-        className={inputClass}
+        className={fieldClass("title")}
         placeholder="e.g. Design login page"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      {errorText("title")}
 
       <label className={labelClass}>Description</label>
       <textarea
-        className={inputClass}
+        className="w-full border rounded px-2 py-1.5 text-sm mb-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         placeholder="Describe what needs to be done..."
         value={desc}
         onChange={(e) => setDesc(e.target.value)}
       />
 
-      <div className="flex gap-2 mb-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <div className="flex-1">
           <label className={labelClass}>Priority</label>
-          <select
-            className="w-full border rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-          >
+          <select className={fieldClass("priority")} value={priority} onChange={(e) => setPriority(e.target.value)}>
+            <option value="">Select priority</option>
             {PRIORITIES.map((p) => (
-              <option key={p.key} value={p.key}>
-                {p.label}
-              </option>
+              <option key={p.key} value={p.key}>{p.label}</option>
             ))}
           </select>
+          {errorText("priority")}
         </div>
         <div className="flex-1">
           <label className={labelClass}>Status</label>
-          <select
-            className="w-full border rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <select className={fieldClass("status")} value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="">Select status</option>
             {STATUS.map((s) => (
-              <option key={s.key} value={s.key}>
-                {s.label}
-              </option>
+              <option key={s.key} value={s.key}>{s.label}</option>
             ))}
           </select>
+          {errorText("status")}
         </div>
       </div>
 
-      <div className="flex gap-2 mb-3">
+      <div className="flex flex-col sm:flex-row gap-2">
         <div className="flex-1">
           <label className={labelClass}>Assignee</label>
           <input
-            className="w-full border rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className={fieldClass("assignee")}
             placeholder="e.g. Ram"
             value={assignee}
             onChange={(e) => setAssignee(e.target.value)}
           />
+          {errorText("assignee")}
         </div>
         <div className="flex-1">
           <label className={labelClass}>Due Date</label>
           <input
             type="date"
-            className="w-full border rounded px-2 py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            className={fieldClass("dueDate")}
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
+          {errorText("dueDate")}
         </div>
       </div>
 
-      
-        {/* <button
-          className="bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded"
-          onClick={handleSubmit}
-        >
-          {submitLabel}
-        </button>
-        <button
-          className="border dark:border-gray-600 dark:text-white text-xs px-3 py-1.5 rounded"
-          onClick={onCancel}
-        >
-          Cancel
-        </button> */}
-              {submitError && <p className="text-xs text-red-500 mb-2">{submitError}</p>}
+      {submitError && <p className="text-xs text-red-500 mb-2">{submitError}</p>}
 
       <div className="flex gap-2 mt-1">
         <button
@@ -155,7 +145,6 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
           Cancel
         </button>
       </div>
-      </div>
-    
+    </div>
   );
 }

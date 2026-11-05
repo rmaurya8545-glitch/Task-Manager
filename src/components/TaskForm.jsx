@@ -123,7 +123,7 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-2">
+      
         {/* <button
           className="bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded"
           onClick={handleSubmit}
@@ -156,6 +156,6 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
         </button>
       </div>
       </div>
-    </div>
+    
   );
 }

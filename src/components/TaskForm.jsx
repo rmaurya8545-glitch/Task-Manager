@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { STATUS, PRIORITIES } from "../constants.js";
+import Spinner from "./Spinner.jsx";
 
 export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit, onCancel }) {
   const [title, setTitle] = useState(initial?.title || "");
@@ -8,18 +9,44 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
   const [status, setStatus] = useState(initial?.status || defaultStatus);
   const [assignee, setAssignee] = useState(initial?.assignee || "");
   const [dueDate, setDueDate] = useState(initial?.dueDate || "");
+  const [saving, setSaving] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  function handleSubmit() {
-    const trimmedTitle = title.trim();
-    if (!trimmedTitle) return;
-    onSubmit({
-      title: trimmedTitle,
-      description: desc.trim(),
-      priority,
-      status,
-      assignee: assignee.trim(),
-      dueDate
-    });
+  // function handleSubmit() {
+  //   const trimmedTitle = title.trim();
+  //   if (!trimmedTitle) return;
+  //   onSubmit({
+  //     title: trimmedTitle,
+  //     description: desc.trim(),
+  //     priority,
+  //     status,
+  //     assignee: assignee.trim(),
+  //     dueDate
+  //   });
+  // }
+
+    function handleSubmit() {
+    const newErrors = validate();
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
+    setSubmitError("");
+    setSaving(true);
+
+    Promise.resolve(
+      onSubmit({
+        title: title.trim(),
+        description: desc.trim(),
+        priority,
+        status,
+        assignee: assignee.trim(),
+        dueDate
+      })
+    )
+      .catch(() =>
+        setSubmitError("Could not save. Please check your connection and try again.")
+      )
+      .finally(() => setSaving(false));
   }
 
   const inputClass =
@@ -97,7 +124,7 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2">
-        <button
+        {/* <button
           className="bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded"
           onClick={handleSubmit}
         >
@@ -108,7 +135,26 @@ export default function TaskForm({ initial, defaultStatus, submitLabel, onSubmit
           onClick={onCancel}
         >
           Cancel
+        </button> */}
+              {submitError && <p className="text-xs text-red-500 mb-2">{submitError}</p>}
+
+      <div className="flex gap-2 mt-1">
+        <button
+          disabled={saving}
+          className="bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded flex items-center gap-1.5 disabled:opacity-70 disabled:cursor-not-allowed"
+          onClick={handleSubmit}
+        >
+          {saving && <Spinner className="w-3 h-3" />}
+          {saving ? "Saving..." : submitLabel}
         </button>
+        <button
+          disabled={saving}
+          className="border dark:border-gray-600 dark:text-white text-xs px-3 py-1.5 rounded disabled:opacity-70"
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
+      </div>
       </div>
     </div>
   );

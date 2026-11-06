@@ -172,14 +172,6 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
     const task = tasks.find((t) => t.id === id);
     if (!task || task.status === statusKey) return;
 
-    function handleMove (id, direction){
-      const task = tasks.find((t) => t.id === id);
-      if(!task) return;
-      const idx = STATUS.findIndex((s) => s.key === task.status);
-      const target = STATUS[idx + direction];
-      if(target) handleDrop(id, target.key);
-    }
-
     withBusy(id, () =>
       fetch(`${API_URL}/api/tasks/${id}`, {
         method: "PUT",
@@ -195,6 +187,14 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
         )
     );
   }
+
+  function handleMove (id, direction){
+      const task = tasks.find((t) => t.id === id);
+      if(!task) return;
+      const idx = STATUS.findIndex((s) => s.key === task.status);
+      const target = STATUS[idx + direction];
+      if(target) handleDrop(id, target.key);
+    }
 
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase());

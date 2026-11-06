@@ -78,7 +78,7 @@ import { useState } from "react";
 import TaskCard from "./TaskCard.jsx";
 import TaskForm from "./TaskForm.jsx";
 
-export default function Column({ column, tasks, busyIds = [], onAddTask, onSaveEdit, onDelete, onDrop }) {
+export default function Column({ column, tasks, busyIds = [], onAddTask, onSaveEdit, onDelete, onMove, onDrop }) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [dragOver, setDragOver] = useState(false);

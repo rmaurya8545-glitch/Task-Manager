@@ -90,6 +90,7 @@ import Column from "./Column.jsx";
 import Spinner from "./Spinner.jsx";
 import useSlowHint from "../hooks/useSlowHint.js";
 
+
 export default function BoardPage({ searchQuery = "", priorityFilter = "all", userId }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -145,7 +146,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
   }
 
   function handleSaveEdit(id, data) {
-    return fetch(`${API_URL}/api/tasks/${id}`, {
+    return fetch(`${API_URL}/api/tasks/${id}?userId=${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -161,7 +162,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
 
   function handleDelete(id) {
     return withBusy(id, () =>
-      fetch(`${API_URL}/api/tasks/${id}`, { method: "DELETE" }).then((res) => {
+      fetch(`${API_URL}/api/tasks/${id}?userId=${userId}`, { method: "DELETE" }).then((res) => {
         if (!res.ok) throw new Error("delete");
         setTasks((prev) => prev.filter((t) => t.id !== id));
       })
@@ -173,7 +174,7 @@ export default function BoardPage({ searchQuery = "", priorityFilter = "all", us
     if (!task || task.status === statusKey) return;
 
     withBusy(id, () =>
-      fetch(`${API_URL}/api/tasks/${id}`, {
+      fetch(`${API_URL}/api/tasks/${id}?userId=${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...task, status: statusKey })

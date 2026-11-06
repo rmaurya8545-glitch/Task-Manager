@@ -10,8 +10,14 @@ import RegisterPage from "./components/RegisterPage.jsx";
 export default function App() {
   const [page, setPage] = useState("hero");
   const [theme, setTheme] = useState("light");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    try{
+      return JSON.parse(localStorage.getItem("kanban-user"));
+    }catch{
+      return null;
+    }
+  });
+  const isLoggedIn = currentUser !== null;
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
@@ -43,9 +49,17 @@ export default function App() {
   }
 
   function handleLogout(){
-    setIsLoggedIn(false);
+    localStorage.removeItem("kanban-user");
     setCurrentUser(null);
+    setSearchQuery("");
+    setPriorityFilter("all");
     navigate("hero");
+  }
+  function handleLoginSuccess(user){
+    const safeUser = { id:user.id, name:user.name, email:user.email };
+    localStorage.setItem("kanban-user", JSON.stringify(safeUser));
+    setCurrentUser(safeUser);
+    navigate("app");
   }
 
   return (
@@ -73,11 +87,7 @@ export default function App() {
       {page === "login" && ( 
         <LoginPage
           onNavigate={navigate}
-          onLoginSuccess={(user) => {
-            setIsLoggedIn(true);
-            setCurrentUser(user);
-            navigate("app");
-          }}
+          onLoginSuccess={handleLoginSuccess} 
         />
       )}
       {page === "register" && <RegisterPage onNavigate={navigate} />}

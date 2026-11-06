@@ -125,6 +125,7 @@ export default function Column({ column, tasks, busyIds = [], onAddTask, onSaveE
             onCancelEdit={() => setEditingId(null)}
             onSaveEdit={handleSave}
             onDelete={onDelete}
+            onMove={onMove}
             onDragStart={handleDragStart}
           />
         ))}

@@ -54,12 +54,15 @@
 // }
 
 
-import { PRIORITIES, formatDate } from "../constants.js";
+import { PRIORITIES, STATUS, formatDate } from "../constants.js";
 import TaskForm from "./TaskForm.jsx";
 import Spinner from "./Spinner.jsx";
 
-export default function TaskCard({ task, busy = false, isEditing, onStartEdit, onCancelEdit, onSaveEdit, onDelete, onDragStart }) {
+export default function TaskCard({ task, busy = false, isEditing, onStartEdit, onCancelEdit, onSaveEdit, onDelete, onMove, onDragStart }) {
   const pri = PRIORITIES.find((p) => p.key === task.priority) || PRIORITIES[1];
+  const idx = STATUS.findIndex((s) => s.key === task.status);
+  const prev = STATUS[idx - 1];
+  const next = STATUS[idx + 1];
 
   if (isEditing) {
     return (
@@ -103,20 +106,36 @@ export default function TaskCard({ task, busy = false, isEditing, onStartEdit, o
         <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">📅 {formatDate(task.dueDate)}</div>
       )}
 
-      <div className="flex gap-1.5">
-        <button
-          className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 text-xs"
-          onClick={() => onStartEdit(task.id)}
-        >
-          Edit
-        </button>
-        <button
-          className="border dark:border-gray-600 rounded px-2 py-0.5 text-xs text-red-500"
-          onClick={() => onDelete(task.id)}
-        >
-          Delete
-        </button>
-      </div>
+      <div className="flex flex-wrap gap-1.5">
+  {prev && (
+    <button
+      className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 text-xs"
+      onClick={() => onMove(task.id, -1)}
+    >
+      ← {prev.label}
+    </button>
+  )}
+  {next && (
+    <button
+      className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 text-xs"
+      onClick={() => onMove(task.id, 1)}
+    >
+      {next.label} →
+    </button>
+  )}
+  <button
+    className="border dark:border-gray-600 dark:text-white rounded px-2 py-0.5 text-xs"
+    onClick={() => onStartEdit(task.id)}
+  >
+    Edit
+  </button>
+  <button
+    className="border dark:border-gray-600 rounded px-2 py-0.5 text-xs text-red-500"
+    onClick={() => onDelete(task.id)}
+  >
+    Delete
+  </button>
+</div>
     </div>
   );
 }

@@ -78,7 +78,8 @@ export default function App() {
       />
 
       {page === "hero" && (
-        <HeroPage onGetStarted={handleGetStarted} onLogin={() => navigate("login")} />
+        // <HeroPage onGetStarted={handleGetStarted} onLogin={() => navigate("login")} />
+        <HeroPage onGetStarted={handleGetStarted} onLearnMore={() =>navigate("about")} />
       )}
       {page === "app" && (
         <BoardPage searchQuery={searchQuery} priorityFilter={priorityFilter} userId={currentUser?.id} />

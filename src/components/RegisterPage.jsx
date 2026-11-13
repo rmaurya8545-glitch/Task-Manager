@@ -154,7 +154,7 @@ export default function RegisterPage({ onNavigate }) {
   }
 
   return (
-    <div className="max-w-sm mx-auto px-6 py-14">
+    <div className="max-w-sm mx-auto px-6 pt-10 pb-6">
       <h2 className="font-bold text-2xl mb-1 dark:text-white">Create your account</h2>
       <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Start organizing your tasks</p>
 

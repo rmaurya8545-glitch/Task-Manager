@@ -93,7 +93,7 @@ export default function App() {
       )}
       {page === "register" && <RegisterPage onNavigate={navigate} />}
 
-      <Footer />
+      <Footer compact={page === "login" || page === "register" } />
     </div>
   );
 }

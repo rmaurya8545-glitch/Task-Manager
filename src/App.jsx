@@ -63,7 +63,7 @@ export default function App() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col overflow-x-clip">
       <Navbar
         onNavigate={navigate}
         theme={theme}
